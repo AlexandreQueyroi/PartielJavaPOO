@@ -6,7 +6,7 @@ public interface Louable {
 
     // TODO : Corriger les 2 incohérences dans cette interface
 
-    void louer() throws LocationException;
+    void louer(int debut, int fin) throws LocationException;
 
     void liberer() throws LocationException;
 

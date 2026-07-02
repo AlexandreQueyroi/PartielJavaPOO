@@ -7,9 +7,8 @@ package com.camping;
  * Ici l'énumération {@link TypeHebergement} définit les 2 types d'hébergement gérés : Emplacement pour un tente (parcelle) ou Mobil-home
  */
 public enum TypeHebergement {
-    EMPLACEMENT(),
-    MOBIL_HOME();
-
+    EMPLACEMENT("Emplacement"),
+    MOBIL_HOME("Mobil-home");
     // TODO : Un erreur s'est glissée dans cette classe => la corriger
 
     private final String label;
@@ -18,6 +17,9 @@ public enum TypeHebergement {
         this.label = label;
     }
 
-    // TODO : coder le getter
+    // TODO : Coder le getter
+    public String getLabel() {
+        return label;
+    }
 
 }

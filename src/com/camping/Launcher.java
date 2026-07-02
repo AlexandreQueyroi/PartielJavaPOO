@@ -19,10 +19,10 @@ public class Launcher {
 
 
     /* TODO QUESTION : Cette méthode est déclarée private. Qu'en pensez vous ?
-       Votre réponse :
+       Votre réponse : C'est pour protéger la méthode de modifications externes
      */
     /* TODO QUESTION : Cette méthode est déclarée static. Qu'en pensez vous ?
-       Votre réponse :
+       Votre réponse : C'est pour pouvoir l'appeler sans instancier la classe Launcher
      */
     private static void testScenario() {
         HomeList camping = new HomeList();
@@ -42,21 +42,33 @@ public class Launcher {
 
         // 1. 7 personnes / Emplacement 200m2 / 10 jours
         // TODO : Coder ce scénario
+        System.out.println("\n[1] 7 personnes / Emplacement 200m2 / 10 jours");
+        traiterDemandeEmplacement(camping, 200, jourJ, jourJ + 10);
 
         // 2. Famille 3 personnes / Mobil-home (petit adéquat) / 15 jours
         // TODO : Coder ce scénario
+        System.out.println("\n[2] Famille 3 personnes / Mobil-home petit / 15 jours");
+        traiterDemandeMobilHome(camping, true, jourJ, jourJ + 15);
 
         // 3. Couple / Emplacement 60m2 / 7 jours
         // TODO : Coder ce scénario
+        System.out.println("\n[3] Couple / Emplacement 60m2 / 7 jours");
+        traiterDemandeEmplacement(camping, 60, jourJ, jourJ + 7);
 
         // 4. Famille 6 personnes / Mobil-home (obligatoirement grand) / 21 jours
         // TODO : Coder ce scénario
+        System.out.println("\n[4] Famille 6 personnes / Mobil-home grand / 21 jours");
+        traiterDemandeMobilHome(camping, false, jourJ, jourJ + 21);
 
         // 5. 3 copines / Emplacement 100m2 / 18 jours
         // TODO : Coder ce scénario
+        System.out.println("\n[5] 3 copines / Emplacement 100m2 / 18 jours");
+        traiterDemandeEmplacement(camping, 100, jourJ, jourJ + 18);
 
         // 6. Papi & mamie / Mobil-home 4 personnes (petit) / 60 jours
         // TODO : Coder ce scénario
+        System.out.println("\n[6] Papi & mamie / Mobil-home petit / 60 jours");
+        traiterDemandeMobilHome(camping, true, jourJ, jourJ + 60);
 
         System.out.println("\n=====================================================");
         System.out.println("  ÉTAT DU CAMPING APRÈS LES ENREGISTREMENTS DE J" + jourJ);

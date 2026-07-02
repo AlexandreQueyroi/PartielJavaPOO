@@ -88,7 +88,7 @@ public class HomeList implements Serializable {
     // TODO : Coder une méthode 'getFreeHome' permettant de renvoyer le 1er Mobil-Home disponible (non utilisée) selon une taille et une journée.
     // Si aucun dispo, renvoyer la bonne exception
     public Home getFreeHome(boolean petit, int jour) throws LocationException {
-        int capacite = petit ? 4 : 6;
+        int capacite = petit ? MobilHome.CAPACITE_PETIT : MobilHome.CAPACITE_GRAND;
         for (Home home : listeHebergements) {
             if (home instanceof MobilHome mobilHome) {
                 if (mobilHome.getNbPersonnesMax() == capacite && mobilHome.getJourDebut() == 0 && mobilHome.getJourFin() == 0) {

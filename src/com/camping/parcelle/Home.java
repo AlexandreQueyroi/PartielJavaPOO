@@ -10,15 +10,15 @@ import com.camping.exception.LocationException;
  */
 public abstract class Home implements Louable {
     // TODO : Merci de respecter le principe d'encapsulation !
-    private int id;
-    private double prix;
+    private final int id;
+    private final double prix;
     private int jourDebut;
     private int jourFin;
     /*
         TODO QUESTION : Que vaut initialement 'type' à la ligne suivante ?
         Votre réponse : 'type' vaut null, car un attribut de type objet non initialisé vaut null par défaut.
      */
-    private TypeHebergement type;
+    private final TypeHebergement type;
 
     // TODO : Améliorez le code de ce constructeur
     // TODO : Ecrire la javadoc (la plus complète possible) de la méthode ci-dessous

@@ -8,10 +8,11 @@ import com.camping.parcelle.MobilHome;
 import java.util.Scanner;
 
 public class Launcher {
-    public static void main(String[] args) {
+    static void main(String[] args) {
         // la méthode ci-dessous permet de tester un scénario
         // une fois utilisée, corrigée, commentez la ligne
-        testScenario();
+
+        //testScenario();
 
         // Méthode pour lancer le programme à son gestionnaire
         runApp();
@@ -84,7 +85,7 @@ public class Launcher {
         camping.init();
 
         Scanner scanner = new Scanner(System.in);
-        boolean continuer = true;
+        boolean quitter = false;
         int jourActuel = 150; // On démarre par défaut à la réouverture (J150)
 
         System.out.println("=====================================================");
@@ -92,7 +93,7 @@ public class Launcher {
         System.out.println("=====================================================");
 
         // TODO : Inverser la condition 'continuer' par 'quitter'
-        while (continuer) {
+        while (!quitter) {
             System.out.println("\n--- [ JOUR ACTUEL DE LA SIMULATION : " + jourActuel + " ] ---");
             System.out.println("1. Afficher l'état global du camping (Emplacements & MH)");
             System.out.println("2. Enregistrer une location d'EMPLACEMENT (Tente)");
@@ -106,7 +107,7 @@ public class Launcher {
             switch (choix) {
                 case 1:
                     System.out.println("\n=== ÉTAT DES LOCATIONS ===");
-                    // TODO : Coder ce qu'il faut pour afficher les locations
+                    camping.display();
                     System.out.println("==========================");
                     break;
                 case 2:
@@ -118,6 +119,13 @@ public class Launcher {
 
                     // TODO : Coder ce qu'il faut pour faire la réservation (attention aux données)
                     // Si erreur avec la demande (données saisies), afficher un message explicatif
+                    if (taille != 60 && taille != 100 && taille != 150 && taille != 200) {
+                        System.out.println("[Erreur] Taille invalide : choisissez 60, 100, 150 ou 200 m2.");
+                    } else if (nbJours <= 0) {
+                        System.out.println("[Erreur] Le nombre de jours doit être supérieur à 0.");
+                    } else {
+                        traiterDemandeEmplacement(camping, taille, jourActuel, jourActuel + nbJours);
+                    }
                     break;
                 case 3:
                     System.out.println("\n--- NOUVEAU MOBIL-HOME ---");
@@ -130,6 +138,13 @@ public class Launcher {
 
                     // TODO : Gérer la réservation de MobilHome selon le souhait du client
                     // Si erreur avec la demande (données saisies), afficher un message explicatif
+                    if (typeMh != 1 && typeMh != 2) {
+                        System.out.println("[Erreur] Choix invalide : tapez 1 (Petit) ou 2 (Grand).");
+                    } else if (joursM <= 0) {
+                        System.out.println("[Erreur] Le nombre de jours doit être supérieur à 0.");
+                    } else {
+                        traiterDemandeMobilHome(camping, typeMh == 1, jourActuel, jourActuel + joursM);
+                    }
                     break;
                 case 4:
                     System.out.println("\n--- RENDRE UNE LOCATION ---");
@@ -141,12 +156,21 @@ public class Launcher {
 
                     // On cherche l'hébergement dans la liste globale
                     // TODO : Coder ce qu'il faut pour rendre la location
+                    try {
+                        camping.freeHome(idALiberer);
+                        System.out.println("-> Hébergement n°" + idALiberer + " libéré.");
+                    } catch (LocationException e) {
+                        System.out.println("[Erreur] " + e.getMessage());
+                    }
                     break;
                 case 5:
                     System.out.println("\nBye Bye !");
                     // TODO : Oups.. apparemment le programme ne s'arrête jamais, corrigez
+                    quitter = true;
                     break;
                 // TODO : prévoir un cas par défaut au cas où la saisie est incorrect pour afficher "[Erreur] Choix inconnu. Veuillez recommencer."
+                default:
+                    System.out.println("\n[Erreur] Choix inconnu. Veuillez recommencer.");
             }
         }
 
@@ -170,12 +194,17 @@ public class Launcher {
 
         if (trouve != null) {
             // TODO : Améliorer le code juste ci-dessous
-            trouve.setJourDebut(debut);
-            trouve.setJourFin(fin);
+            try {
+                trouve.louer(debut, fin);
+            } catch (LocationException e) {
+                System.out.println("-> ÉCHEC : " + e.getMessage());
+                return;
+            }
 
             /*
                 TODO QUESTION : Que fait l'instruction suivante ? Et pourquoi ça marche ?
-                Votre réponse :
+                Votre réponse : C'est un cast (transtypage) de Home vers Location. Ça marche car l'objet référencé
+                par 'trouve' est réellement une instance de Location (getFreeHome ne renvoie que des Location).
              */
             Location loc = (Location) trouve;
 
@@ -186,6 +215,7 @@ public class Launcher {
             }
 
             // TODO : Afficher le montant prévu pour la location
+            System.out.printf("   Tarif : %.2f€/jour. Total prévu : %.2f€\n", loc.getPrix(), (fin - debut) * loc.getPrix());
         } else {
             System.out.println("-> ÉCHEC : Aucun emplacement de disponible (même en surclassement).");
         }
@@ -215,7 +245,7 @@ public class Launcher {
             MobilHome mh = (MobilHome) trouve;
 
             // TODO : Oups, un "magic number" => corrigez
-            if (veutPetit && mh.getNbPersonnesMax() == 6) {
+            if (veutPetit && mh.getNbPersonnesMax() == MobilHome.CAPACITE_GRAND) {
                 System.out.println("-> Succès ! Affecté au Mobil-Home n°" + mh.getId() + " [SURCLASSÉ en Grand MH]");
             } else {
                 System.out.println("-> Succès ! Affecté au Mobil-Home n°" + mh.getId());

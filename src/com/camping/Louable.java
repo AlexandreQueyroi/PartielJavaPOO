@@ -14,7 +14,7 @@ public interface Louable {
 
     int getId();
 
-    public default boolean estDisponible() {
+    default boolean estDisponible() {
         return true;
     }
 }

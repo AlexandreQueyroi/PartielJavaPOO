@@ -3,6 +3,9 @@ package com.camping.parcelle;
 import com.camping.TypeHebergement;
 
 public class MobilHome extends Home {
+    public static final int CAPACITE_PETIT = 4;
+    public static final int CAPACITE_GRAND = 6;
+
     private int nbPersonnesMax;
 
     public MobilHome(int id, int nbPersonnesMax, double prix, int jourDebut, int jourFin) {
@@ -16,7 +19,7 @@ public class MobilHome extends Home {
     @Override
     public void display() {
         // TODO : Transformer le code ci-dessous avec une expression ternaire
-        String type = (this.nbPersonnesMax == 4) ? "petit" : "grand";
+        String type = (this.nbPersonnesMax == CAPACITE_PETIT) ? "petit" : "grand";
 
         // TODO : Afficher dans la console les infos du MobilHome mais
         // 1. S'il est pas loué, le fait qu'il soit 'libre'
